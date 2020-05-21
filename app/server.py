@@ -10,7 +10,8 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 from PIL import Image, ImageOps
 
-apt-get install libgtk2.0-dev -y
+apt-get update
+apt-get install libgtk2.0-dev
 import cv2
 
 
