@@ -9,6 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 from PIL import Image, ImageOps
+import cv2
 
 
 export_file_url = 'https://www.googleapis.com/drive/v3/files/1ANKcAESByerEJEZ8TeamAyCwJM2T78bv?alt=media&key=AIzaSyAWljgbgq4hE2SeVj7EPsjIt7ZMKchm8Os'
@@ -61,7 +62,12 @@ async def homepage(request):
 async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
-    img = open_image(BytesIO(img_bytes))
+#     img = open_image(BytesIO(img_bytes))
+    image = cv2.imread(BytesIO(img_bytes))
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    imagem = cv2.bitwise_not(gray_image)
+    cv2.imwrite('gray_image.png',imagem)
+    img = open_image('gray_image.png')
     prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction).split('_')[-1]})
 
