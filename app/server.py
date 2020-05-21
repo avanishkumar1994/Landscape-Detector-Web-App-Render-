@@ -8,6 +8,8 @@ from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
+from PIL import Image, ImageOps
+
 
 export_file_url = 'https://www.googleapis.com/drive/v3/files/1ANKcAESByerEJEZ8TeamAyCwJM2T78bv?alt=media&key=AIzaSyAWljgbgq4hE2SeVj7EPsjIt7ZMKchm8Os'
 export_file_name = 'export.pkl'
@@ -59,7 +61,12 @@ async def homepage(request):
 async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
-    img = open_image(BytesIO(img_bytes))
+#     img = open_image(BytesIO(img_bytes))
+
+    img = Image.open(BytesIO(img_bytes)).convert('RGB')
+    r = img.convert('L')
+    img = ImageOps.invert(r)
+
     prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction).split('_')[-1]})
 
