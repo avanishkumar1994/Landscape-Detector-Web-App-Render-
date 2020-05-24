@@ -11,10 +11,10 @@ from starlette.staticfiles import StaticFiles
 from PIL import Image, ImageOps
 
 
-export_file_url = 'https://www.googleapis.com/drive/v3/files/1ANKcAESByerEJEZ8TeamAyCwJM2T78bv?alt=media&key=AIzaSyAWljgbgq4hE2SeVj7EPsjIt7ZMKchm8Os'
+export_file_url = 'https://www.googleapis.com/drive/v3/files/1YZo24jHVIZPRS1SdlJ84YIitlvROydbl?alt=media&key=AIzaSyAWljgbgq4hE2SeVj7EPsjIt7ZMKchm8Os'
 export_file_name = 'export.pkl'
 
-classes = ['character_29_waw', 'character_6_cha', 'character_32_patalosaw', 'character_7_chha', 'character_4_gha', 'character_24_bha', 'character_12_thaa', 'character_22_pha', 'character_5_kna', 'character_10_yna', 'character_1_ka', 'character_27_ra', 'character_13_daa', 'digit_2', 'character_21_pa', 'digit_5', 'character_8_ja', 'digit_4', 'digit_3', 'character_3_ga', 'character_18_da', 'character_28_la', 'character_19_dha', 'character_23_ba', 'character_33_ha', 'character_2_kha', 'character_34_chhya', 'character_9_jha', 'character_11_taamatar', 'character_25_ma', 'character_30_motosaw', 'character_17_tha', 'character_35_tra', 'character_36_gya', 'character_31_petchiryakha', 'character_15_adna', 'character_14_dhaa', 'character_16_tabala', 'digit_6', 'digit_1', 'digit_8', 'character_20_na', 'character_26_yaw', 'digit_9', 'digit_0', 'digit_7']
+classes = ['buildings', 'forest', 'glacier', 'mountain', 'sea', 'street']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -63,7 +63,7 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction).split('_')[-1]})
+    return JSONResponse({'result': str(prediction)})
 
 
 if __name__ == '__main__':
